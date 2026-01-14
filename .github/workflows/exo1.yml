@@ -1,0 +1,14 @@
+name: Ouverture du restaurant
+
+# Déclenche le workflow à chaque push sur main
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  service:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Annoncer l'ouverture
+        run: echo "Le restaurant est ouvert !"
