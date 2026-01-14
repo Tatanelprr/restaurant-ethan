@@ -1,25 +1,28 @@
-name: Test addition
+name: Exercice 2 - Test addition
 
 on:
   push:
-    branches:
-      - main
+    branches: [ "main" ]
+  # Ajout recommandé pour tester aussi les Pull Requests
+  pull_request:
+    branches: [ "main" ]
 
 jobs:
   test:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v3
+      - name: Récupération du code
+        uses: actions/checkout@v4
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v3
+      - name: Installation de Node.js
+        uses: actions/setup-node@v4
         with:
           node-version: '20'
+          cache: 'npm' # Accélère l'installation des dépendances
 
-      - name: Install dependencies
-        run: npm install
+      - name: Installation des dépendances (Clean Install)
+        run: npm ci # Plus sûr et plus rapide que npm install en CI
 
-      - name: Run tests
+      - name: Exécution des tests
         run: npm test

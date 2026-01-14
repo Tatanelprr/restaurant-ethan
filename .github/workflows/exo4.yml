@@ -1,27 +1,32 @@
-name: Lint et test
+name: Exercice 4 - Inspection Michelin
 
 on:
   push:
-    branches:
-      - main
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
 
 jobs:
-  lint-et-test:
+  inspection:
     runs-on: ubuntu-latest
+
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v3
+    - name: Récupération de la carte (Checkout)
+      uses: actions/checkout@v4
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: "20"
+    - name: Préparation de la cuisine (Setup Node)
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20'
+        cache: 'npm'
 
-      - name: Install dependencies
-        run: npm install
+    - name: Installation des ustensiles (Install)
+      run: npm ci
 
-      - name: Lint code
-        run: npm run lint
+    # ÉTAPE CRITIQUE : Vérification de la présentation
+    - name: Vérification de la carte (Lint)
+      run: npm run lint
 
-      - name: Run tests
-        run: npm test
+    # Cette étape ne se lance QUE si le Lint a réussi
+    - name: Dégustation (Tests)
+      run: npm run test

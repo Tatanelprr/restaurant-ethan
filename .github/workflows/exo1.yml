@@ -1,14 +1,17 @@
-name: Ouverture du restaurant
+name: Exercice 1 - Ouverture du restaurant
 
-# Déclenche le workflow à chaque push sur main
+# Déclenche le workflow à chaque push sur la branche main
 on:
   push:
-    branches:
-      - main
+    branches: [ "main" ]
+  # Ajout de bonne pratique : déclenche aussi sur les Pull Requests
+  pull_request:
+    branches: [ "main" ]
 
 jobs:
   service:
     runs-on: ubuntu-latest
+
     steps:
       - name: Annoncer l'ouverture
         run: echo "Le restaurant est ouvert !"
