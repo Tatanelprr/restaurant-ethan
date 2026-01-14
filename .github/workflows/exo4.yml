@@ -1,4 +1,4 @@
-name: Exercice 4 - Inspection Michelin
+name: Exercice 4 et 5 - Inspection & Franchises
 
 on:
   push:
@@ -7,26 +7,32 @@ on:
     branches: [ "main" ]
 
 jobs:
-  inspection:
+  inspection-et-test:
     runs-on: ubuntu-latest
+
+    # AJOUT : La matrice pour créer 3 jobs parallèles
+    strategy:
+      matrix:
+        node-version: [18.x, 20.x, 22.x]
 
     steps:
     - name: Récupération de la carte (Checkout)
       uses: actions/checkout@v4
 
-    - name: Préparation de la cuisine (Setup Node)
+    # MODIFICATION : On utilise la variable de la matrice ici
+    - name: Préparation de la cuisine (Setup Node ${{ matrix.node-version }})
       uses: actions/setup-node@v4
       with:
-        node-version: '20'
+        node-version: ${{ matrix.node-version }}
         cache: 'npm'
 
     - name: Installation des ustensiles (Install)
       run: npm ci
 
-    # ÉTAPE CRITIQUE : Vérification de la présentation
+    # Le Lint se lance sur chaque version (pour être sûr que le code est propre partout)
     - name: Vérification de la carte (Lint)
       run: npm run lint
 
-    # Cette étape ne se lance QUE si le Lint a réussi
+    # Si le Lint passe, on lance les tests
     - name: Dégustation (Tests)
       run: npm run test
